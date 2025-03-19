@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<title>Visa Application Form</title>
+<body style="background-color:#CBF0F1">
+
+<h1>Visa Application Form</h1>
+<p>
+!Note: Any information provided will be verified. 
+Inaccuracies or discrepancies may delay the processing of the form.
+</p>
+
+<form name="visaForm" onsubmit="return validateVisaForm()">
+<hr>
+<h2>Personal Information</h2>
+First name:<br> 
+<input type="text" name="firstname" style="background-color:#E7F6F6"><br>
+Middle name:<br>
+<input type="text" name="middlename" style="background-color:#E7F6F6"><br>
+Last name:<br>  
+<input type="text" name="lastname" style="background-color:#E7F6F6"><br>
+<br>
+Gender:
+<select name="gender" style="background-color:#E7F6F6">
+<option>Select</option>
+<option>Prefer not to say</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="other">Other</option>
+</select><br><br>
+Date of Birth:<br>   
+<input type="date" name="dob" style="background-color:#E7F6F6"><br>
+<br>
+Nationality:<br>
+<input type="text" name="nationality" style="background-color:#E7F6F6"><br>
+Passport Number:<br>
+<input type="text" name="passportnumber" style="background-color:#E7F6F6"><br><br>
+Phone number:<br>   
+<input type="number" name="mobilenumber" style="background-color:#E7F6F6"><br>
+E-mail:<br>    
+<input type="email" name="email" style="background-color:#E7F6F6"><br>
+Country of residence:<br>   
+<input type="text" name="residence" style="background-color:#E7F6F6"><br>
+Postal Code:<br>   
+<input type="number" name="pincode" style="background-color:#E7F6F6"><br>
+<hr>
+
+<h2>Travel Information</h2>
+Purpose of Visit:<br>   
+<select name="purpose" style="background-color:#E7F6F6">
+<option>Select</option>
+<option value="tourism">Tourism</option>
+<option value="business">Business</option>
+<option value="study">Study</option>
+<option value="medical">Medical</option>
+<option value="other">Other</option>
+</select><br><br>
+
+Duration of Stay:<br>
+<input type="number" name="duration" style="background-color:#E7F6F6"> months<br><br>
+
+Travel Dates:<br>
+Arrival Date:<br>
+<input type="date" name="arrival" style="background-color:#E7F6F6"><br>
+Departure Date:<br>
+<input type="date" name="departure" style="background-color:#E7F6F6"><br>
+<br>
+
+Accompanying Family Members:<br>   
+<input type="text" name="family1" style="background-color:#E7F6F6"><br>   
+<input type="text" name="family2" style="background-color:#E7F6F6"><br>   
+<input type="text" name="family3" style="background-color:#E7F6F6"><br>  
+<input type="text" name="family4" style="background-color:#E7F6F6"><br>
+<hr>
+
+<h2>Previous Visa History</h2>
+Have you previously applied for a visa?<br>
+<input type="radio" name="prevvisa" value="yes" onclick="clickref('prevvisaDetails', 'show')">
+<label for="prevvisa">Yes</label><br>
+<input type="radio" name="prevvisa" value="no" onclick="clickref('prevvisaDetails', 'hide')">
+<label for="prevvisa">No</label><br>
+<br>
+<div id="prevvisaDetails" style="display:none;">
+If yes, please provide details:<br>
+<input type="text" name="prevvisaDetails" style="background-color:#E7F6F6"><br>
+</div>
+<hr>
+
+<h2>Country Information</h2>
+Country you are applying to:<br>
+<select name="country" id="country" style="background-color:#E7F6F6" onchange="checkVisaRequirement()">
+    <option value="">Select Country</option>
+    <option value="USA">USA</option>
+    <option value="Canada">Canada</option>
+    <option value="India">India</option>
+    <option value="UK">UK</option>
+    <option value="Australia">Australia</option>
+</select><br>
+<span id="visaRequirementMessage" style="font-weight:bold; color: #ff0000;"></span>
+<br><br>
+
+<button type="submit" style="background-color:#E7F6F6">Submit</button>
+<button type="button" style="background-color:#E7F6F6" onclick="erref()">Refresh</button>
+
+<script>
+function validateVisaForm() {
+    var phone = document.forms["visaForm"]["mobilenumber"].value;
+    var email = document.forms["visaForm"]["email"].value;
+    var pincode = document.forms["visaForm"]["pincode"].value;
+    var firstname = document.forms["visaForm"]["firstname"].value;
+    var lastname = document.forms["visaForm"]["lastname"].value;
+    var nationality = document.forms["visaForm"]["nationality"].value;
+    var passportnumber = document.forms["visaForm"]["passportnumber"].value;
+    var purpose = document.forms["visaForm"]["purpose"].value;
+    var prevVisaApplied = document.querySelector('input[name="prevvisa"]:checked')?.value;
+    var prevVisaDetails = document.forms["visaForm"]["prevvisaDetails"]?.value;
+
+    var phonePattern = /^[0-9]{10}$/;
+    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    var pincodePattern = /^[0-9]{6}$/;
+    var passportPattern = /^[0-9a-zA-Z]{8,12}$/;
+
+    if (!firstname || !lastname || !nationality || !passportnumber || !purpose) {
+        alert("Please fill out all the required fields.");
+        return false;
+    }
+
+    if (!passportnumber.match(passportPattern)) {
+        alert("Passport number must be between 8 to 12 characters.");
+        return false;
+    }
+
+    if (!phone.match(phonePattern)) {
+        alert("Please enter a valid 10-digit phone number.");
+        return false;
+    }
+
+    if (!email.match(emailPattern)) {
+        alert("Please enter a valid email address.");
+        return false;
+    }
+
+    if (!pincode.match(pincodePattern)) {
+        alert("Please enter a valid 6-digit postal code.");
+        return false;
+    }
+
+    if (prevVisaApplied === "yes" && !prevVisaDetails) {
+        alert("Please provide details for the previous visa application.");
+        return false;
+    }
+
+    return refconf();
+}
+
+function refconf() {
+    var country = document.getElementById("country").value;
+    var visaMessage = "";
+
+    if (country === "USA") {
+        visaMessage = "Visa required for most applicants.";
+    } else if (country === "Canada") {
+        visaMessage = "Visa required unless you have an eTA.";
+    } else if (country === "India") {
+        visaMessage = "Visa required before travel.";
+    } else if (country === "UK") {
+        visaMessage = "Visa depends on the duration of stay.";
+    } else if (country === "Australia") {
+        visaMessage = "eVisa available for eligible travelers.";
+    } else {
+        visaMessage = "Please select a country.";
+    }
+
+    var duration = document.forms["visaForm"]["duration"].value;
+    var fare = duration * 100;
+
+    var familyMembers = [];
+    for (var i = 1; i <= 4; i++) {
+        var member = document.forms["visaForm"]["family" + i].value;
+        if (member) familyMembers.push(member);
+    }
+
+    var prevVisaApplied = document.querySelector('input[name="prevvisa"]:checked')?.value;
+    var prevVisaDetails = document.forms["visaForm"]["prevvisaDetails"]?.value;
+    var prevVisaSection = prevVisaApplied === "yes" ? `<p><strong>Details:</strong> ${prevVisaDetails}</p>` : "";
+
+    var formData = `
+        <h2 style="color: #0073e6;">Submission Details</h2>
+        <p><strong>First Name:</strong> ${document.forms["visaForm"]["firstname"].value}</p>
+        <p><strong>Middle Name:</strong> ${document.forms["visaForm"]["middlename"].value}</p>
+        <p><strong>Last Name:</strong> ${document.forms["visaForm"]["lastname"].value}</p>
+        <p><strong>Gender:</strong> ${document.forms["visaForm"]["gender"].value}</p>
+        <p><strong>Date of Birth:</strong> ${document.forms["visaForm"]["dob"].value}</p>
+        <p><strong>Nationality:</strong> ${document.forms["visaForm"]["nationality"].value}</p>
+        <p><strong>Passport Number:</strong> ${document.forms["visaForm"]["passportnumber"].value}</p>
+        <p><strong>Phone Number:</strong> ${document.forms["visaForm"]["mobilenumber"].value}</p>
+        <p><strong>Email:</strong> ${document.forms["visaForm"]["email"].value}</p>
+        <p><strong>Country of Residence:</strong> ${document.forms["visaForm"]["residence"].value}</p>
+        <p><strong>Postal Code:</strong> ${document.forms["visaForm"]["pincode"].value}</p>
+        <h3 style="color: #0073e6;">Travel Information</h3>
+        <p><strong>Purpose of Visit:</strong> ${document.forms["visaForm"]["purpose"].value}</p>
+        <p><strong>Duration of Stay:</strong> ${duration} months</p>
+        <p><strong>Arrival Date:</strong> ${document.forms["visaForm"]["arrival"].value}</p>
+        <p><strong>Departure Date:</strong> ${document.forms["visaForm"]["departure"].value}</p>
+        ${familyMembers.length ? `<p><strong>Accompanying Family Members:</strong> ${familyMembers.join(', ')}</p>` : ""}
+        <h3 style="color: #0073e6;">Previous Visa History</h3>
+        <p><strong>Previous Visa Applied:</strong> ${prevVisaApplied}</p>
+        ${prevVisaSection}
+        <h3 style="color: #0073e6;">Country Information</h3>
+        <p><strong>Country Applying To:</strong> ${country}</p>
+        <p><strong>Visa Requirement:</strong> ${visaMessage}</p>
+        <h3 style="color: red;">Visa Fare </h3>
+        <p>Pay in portal within a week!</p>
+        <p style="color: red; font-weight: bold;"><strong>Total Fare:</strong> $${fare}</p>
+        <h2 style="color: green;">Application Successfully Submitted!</h2>
+    `;
+
+    if (window.confirm('Proceed to submit the form?')) {
+        document.write(formData);
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function erref() {
+    if (window.confirm('Do you really want to refresh and clear the form?')) {
+        location.reload();
+    } else {
+        return false;
+    }
+}
+
+function clickref(id, action) {
+    document.getElementById(id).style.display = action === 'show' ? 'block' : 'none';
+}
+</script>
+
+</form>
+</body>
+</html>
