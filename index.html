@@ -32,7 +32,7 @@ Date of Birth:<br>
 <br>
 Nationality:<br>
 <input type="text" name="nationality" style="background-color:#E7F6F6"><br>
-Passport Number:<br>
+Passport ID:<br>
 <input type="text" name="passportnumber" style="background-color:#E7F6F6"><br><br>
 Phone number:<br>   
 <input type="number" name="mobilenumber" style="background-color:#E7F6F6"><br>
@@ -89,17 +89,17 @@ If yes, please provide details:<br>
 Country you are applying to:<br>
 <select name="country" id="country" style="background-color:#E7F6F6" onchange="checkVisaRequirement()">
     <option value="">Select Country</option>
-    <option value="USA">USA</option>
-    <option value="Canada">Canada</option>
-    <option value="India">India</option>
+    <option value="USA">U</option>
+    <option value="Canada">C</option>
+    <option value="India">I</option>
     <option value="UK">UK</option>
-    <option value="Australia">Australia</option>
+    <option value="Australia">AUS</option>
 </select><br>
 <span id="visaRequirementMessage" style="font-weight:bold; color: #ff0000;"></span>
 <br><br>
 
-<button type="submit" style="background-color:#E7F6F6">Submit</button>
-<button type="button" style="background-color:#E7F6F6" onclick="erref()">Refresh</button>
+<button type="submit" style="background-color:#E7F6F6">Apply For Visa</button>
+<button type="button" style="background-color:#E7F6F6" onclick="erref()">Refresh Form</button>
 
 <script>
 function validateVisaForm() {
@@ -117,7 +117,7 @@ function validateVisaForm() {
     var phonePattern = /^[0-9]{10}$/;
     var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     var pincodePattern = /^[0-9]{6}$/;
-    var passportPattern = /^[0-9a-zA-Z]{8,12}$/;
+    var passportPattern = /^[0-9a-zA-Z]{8,10}$/;
 
     if (!firstname || !lastname || !nationality || !passportnumber || !purpose) {
         alert("Please fill out all the required fields.");
@@ -125,7 +125,7 @@ function validateVisaForm() {
     }
 
     if (!passportnumber.match(passportPattern)) {
-        alert("Passport number must be between 8 to 12 characters.");
+        alert("Passport id must be between 8 to 10 characters.");
         return false;
     }
 
@@ -149,6 +149,10 @@ function validateVisaForm() {
         return false;
     }
 
+    if (country === ""){
+         alert("Please select a country.");
+        return false;
+    }   
     return refconf();
 }
 
